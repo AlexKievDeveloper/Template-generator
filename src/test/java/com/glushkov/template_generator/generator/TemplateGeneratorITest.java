@@ -14,13 +14,13 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class TemplateGeneratorTest {
-    private TemplateGenerator templateGenerator;
-    private Map<String, Object> parameters;
+class TemplateGeneratorITest {
+    private final TemplateGenerator TEMPLATE_GENERATOR;
+    private final Map<String, Object> PARAMETERS;
 
-    TemplateGeneratorTest() {
-        templateGenerator = new TemplateGenerator();
-        parameters = new HashMap<>();
+    TemplateGeneratorITest() {
+        TEMPLATE_GENERATOR = new TemplateGenerator();
+        PARAMETERS = new HashMap<>();
     }
 
     @Test
@@ -36,7 +36,7 @@ class TemplateGeneratorTest {
         }
 
         //when
-        String actualPage = templateGenerator.process(templatePath, parameters).getContent();
+        String actualPage = TEMPLATE_GENERATOR.process(templatePath, PARAMETERS).getContent();
 
         //then
         assertEquals(expectedPage, actualPage);
@@ -55,7 +55,7 @@ class TemplateGeneratorTest {
         }
 
         //when
-        String actualPage = templateGenerator.process(templatePath, parameters).getContent();
+        String actualPage = TEMPLATE_GENERATOR.process(templatePath, PARAMETERS).getContent();
 
         //then
         assertEquals(expectedPage, actualPage);
@@ -66,7 +66,7 @@ class TemplateGeneratorTest {
     void processMapWithMessageTest() throws IOException {
         //prepare
         String templatePath = "/users.ftl";
-        parameters.put("message", "Sorry, no users were found for your request");
+        PARAMETERS.put("message", "Sorry, no users were found for your request");
         String expectedPage;
 
         try (BufferedInputStream bufferedInputStream = new BufferedInputStream(getClass().
@@ -75,7 +75,7 @@ class TemplateGeneratorTest {
         }
 
         //when
-        String actualPage = templateGenerator.process(templatePath, parameters).getContent();
+        String actualPage = TEMPLATE_GENERATOR.process(templatePath, PARAMETERS).getContent();
 
         //then
         assertEquals(expectedPage, actualPage);
@@ -86,16 +86,16 @@ class TemplateGeneratorTest {
     void processMapWithMessageAndCodeTest() throws IOException {
         //prepare
         String templatePath = "/error.ftl";
-        parameters.put("message", "Sorry, no users were found for your request");
-        parameters.put("code", 505);
+        PARAMETERS.put("message", "Sorry, no users were found for your request");
+        PARAMETERS.put("code", 505);
         String expectedPage;
         try (BufferedInputStream bufferedInputStream = new BufferedInputStream(getClass().
-                getResourceAsStream("/error-page-with-message-and-code.ftl"))) {
+                getResourceAsStream("/error-page-with-message-and-code.html"))) {
             expectedPage = new String(bufferedInputStream.readAllBytes());
         }
 
         //when
-        String actualPage = templateGenerator.process(templatePath, parameters).getContent();
+        String actualPage = TEMPLATE_GENERATOR.process(templatePath, PARAMETERS).getContent();
 
         //then
         assertEquals(expectedPage, actualPage);
@@ -126,7 +126,7 @@ class TemplateGeneratorTest {
         usersList.add(firstUser);
         usersList.add(secondUser);
 
-        parameters.put("users", usersList);
+        PARAMETERS.put("users", usersList);
 
         String expectedPage;
         try (BufferedInputStream bufferedInputStream = new BufferedInputStream(getClass().
@@ -135,7 +135,7 @@ class TemplateGeneratorTest {
         }
 
         //when
-        String actualPage = templateGenerator.process(templatePath, parameters).getContent();
+        String actualPage = TEMPLATE_GENERATOR.process(templatePath, PARAMETERS).getContent();
 
         //then
         assertEquals(expectedPage, actualPage);

@@ -12,16 +12,17 @@
     <title>Table users</title>
 </head>
 
-<body class="page_body container-fluid">
+<body>
+<div class="page_body container-fluid">
 <table class="table">
     <thead class="thead-dark">
     <tr class="row">
-        <th scope="col" class="col-lg-1">Id</th>
-        <th scope="col" class="col-lg-2">First name</th>
-        <th scope="col" class="col-lg-2">Second name</th>
-        <th scope="col" class="col-lg-1">Salary</th>
-        <th scope="col" class="col-lg-2">Date of birth</th>
-        <th scope="col" class="col-lg-2">
+        <th scope="col" class="col-1">Id</th>
+        <th scope="col" class="col-2">First name</th>
+        <th scope="col" class="col-2">Second name</th>
+        <th scope="col" class="col-1">Salary</th>
+        <th scope="col" class="col-2">Date of birth</th>
+        <th scope="col" class="col-2">
             <div class="page_add_user_form">
                 <form action="/users/add" method="GET">
                     <button>
@@ -30,7 +31,7 @@
                 </form>
             </div>
         </th>
-        <th class="col-lg-2">
+        <th class="col-2">
             <nav class="navbar navbar-light bg-light search">
                 <form action="/users/search" method="GET" class="form-inline">
                     <div class="input-group">
@@ -47,12 +48,12 @@
     </thead>
     <tbody>
             <tr class="row">
-            <td class="col-lg-1">1</td>
-            <td class="col-lg-2">Alex</td>
-            <td class="col-lg-2">Developer</td>
-            <td class="col-lg-1">3000.0</td>
-            <td class="col-lg-2">1993-06-22</td>
-            <td class="col-lg-2">
+            <td class="col-1">1</td>
+            <td class="col-2">Alex</td>
+            <td class="col-2">Developer</td>
+            <td class="col-1">3000.0</td>
+            <td class="col-2">1993-06-22</td>
+            <td class="col-2">
                 <div class="page__block">
                     <div>
                         <form action="/users/edit" method="GET">
@@ -74,12 +75,12 @@
             </td>
         </tr>
         <tr class="row">
-            <td class="col-lg-1">2</td>
-            <td class="col-lg-2">Misha</td>
-            <td class="col-lg-2">DeveloperNew</td>
-            <td class="col-lg-1">4000.0</td>
-            <td class="col-lg-2">1992-06-22</td>
-            <td class="col-lg-2">
+            <td class="col-1">2</td>
+            <td class="col-2">Misha</td>
+            <td class="col-2">DeveloperNew</td>
+            <td class="col-1">4000.0</td>
+            <td class="col-2">1992-06-22</td>
+            <td class="col-2">
                 <div class="page__block">
                     <div>
                         <form action="/users/edit" method="GET">
@@ -112,6 +113,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
         integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
         crossorigin="anonymous"></script>
+</div>
 </body>
 </html>
 

@@ -12,7 +12,7 @@ class ClasspathTemplateLoaderITest {
 
     @Test
     @DisplayName("Returns a template with content and path to file")
-    void load() throws IOException {
+    void loadTest() throws IOException {
         //prepare
         ClasspathTemplateLoader classpathTemplateLoader = new ClasspathTemplateLoader();
         Template expectedTemplate;
@@ -28,11 +28,14 @@ class ClasspathTemplateLoaderITest {
 
         //when
         Template actualTemplate = classpathTemplateLoader.load("/users.ftl");
-        byte[] actualByteArray = actualTemplate.getContent().readAllBytes();
+        try (BufferedInputStream bufferedInputStream = new BufferedInputStream(actualTemplate.getContent())) {
+            byte[] actualByteArray = bufferedInputStream.readAllBytes();
+
         //then
         for (int i = 0; i < expectedBytesArray.length; i++) {
             assertEquals(expectedBytesArray[i], actualByteArray[i]);
         }
         assertEquals(expectedPath, expectedTemplate.getPath());
+        }
     }
 }

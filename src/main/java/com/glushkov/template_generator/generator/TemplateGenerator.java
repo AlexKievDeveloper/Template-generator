@@ -4,11 +4,9 @@ import com.glushkov.template_generator.entity.ProcessedTemplate;
 import com.glushkov.template_generator.entity.Template;
 import com.glushkov.template_generator.loader.ClasspathTemplateLoader;
 import com.glushkov.template_generator.loader.TemplateLoader;
-
 import com.glushkov.template_generator.processor.ListTemplateProcess;
 import com.glushkov.template_generator.processor.SingleValueTemplateProcess;
 import com.glushkov.template_generator.processor.TemplateProcessor;
-
 
 import java.util.List;
 import java.util.Map;

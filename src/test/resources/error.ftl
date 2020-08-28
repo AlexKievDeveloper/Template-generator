@@ -11,10 +11,10 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
 </head>
-<body class="body">
+<body>
 <div class="container-flex">
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-12">
             <div>
                 <h1>${message}</h1>
             </div>

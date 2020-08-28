@@ -7,13 +7,7 @@ import java.io.InputStream;
 public class ClasspathTemplateLoader implements TemplateLoader {
     @Override
     public Template load(String path) {
-        InputStream resource = getClass().getResourceAsStream(path);//TODO где закрыть поток?
+        InputStream resource = getClass().getResourceAsStream(path);
         return new Template(resource, path);
-        /*try (BufferedInputStream resource = new BufferedInputStream(getClass().getClassLoader().
-                getResourceAsStream(path))) {
-            return new Template(resource, path);
-        } catch (IOException e) {
-            throw new RuntimeException("Error while ", e);
-        }*/
     }
 }

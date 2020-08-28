@@ -3,6 +3,7 @@ package com.glushkov.template_generator.processor;
 import com.glushkov.template_generator.entity.ProcessedTemplate;
 import com.glushkov.template_generator.entity.Template;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
@@ -11,22 +12,22 @@ import java.util.regex.Pattern;
 
 public class ListTemplateProcess implements TemplateProcessor {
 
-    private final Pattern FIND_LIST_PATTERN = Pattern.compile("((?<=list )\\w+) ");
-    private final Pattern FIND_FIELD_PATTERN = Pattern.compile("((?<=user\\.)\\w+)");
-    private final Pattern FIND_CODE_BLOCK_LIST = Pattern.compile("<#list users as user>([\\s\\S]+)</#list>");
-    private final Pattern FIND_ROW_BLOCK = Pattern.compile("<#list users as user>\n([\\s\\S]+)(?=\\n\\s{4}</#list)");
-    private final Pattern FIND_PARAMETER = Pattern.compile("\\$\\{\\w.+}");
+    private final Pattern FIND_LIST_BLOCK_PATTERN = Pattern.compile("<#list .+>([\\s\\S]+)</#list>");
+    private final Pattern FIND_ROW_BLOCK_PATTERN = Pattern.compile("<#list .+>\n([\\s\\S]+)(?=\\n\\s{4}</#list)");
+    private final Pattern FIND_LIST_NAME_PATTERN = Pattern.compile("((?<=list )\\w+) ");
+    private final Pattern FIND_FIELD_PATTERN = Pattern.compile("((?<=\\$\\{)\\w+)");
+    private final Pattern FIND_PARAMETER_PATTERN = Pattern.compile("\\$\\{\\w.+}");
 
     @Override
     public ProcessedTemplate process(Template template, ProcessedTemplate processedTemplate,
                                      Map<String, Object> parameters) {
-        try {
-            String templatePage = new String(template.getContent().readAllBytes());
-            Matcher matcher = FIND_LIST_PATTERN.matcher(templatePage);
+        try (BufferedInputStream bufferedInputStream = new BufferedInputStream(template.getContent())) {
+            String templatePage = new String(bufferedInputStream.readAllBytes());
+            Matcher listNameMatcher = FIND_LIST_NAME_PATTERN.matcher(templatePage);
 
-            if (matcher.find() && parameters.containsKey(matcher.group(1))) {
+            if (listNameMatcher.find() && parameters.containsKey(listNameMatcher.group(1))) {
                 String processedPage = templatePage;
-                String listName = matcher.group(1);
+                String listName = listNameMatcher.group(1);
                 List<?> objectsList = (List<?>) Objects.requireNonNull(parameters.get(listName));
                 processedPage = getProcessedPage(processedPage, objectsList);
                 processedTemplate.setContent(processedPage);
@@ -37,32 +38,35 @@ public class ListTemplateProcess implements TemplateProcessor {
         }
     }
 
-    String getProcessedPage(String page, List<?> objectsList) {
-        List<String> fieldNameList = getFieldNamesList(page);
-        List<String> parametersList = getParametersList(page);
-        StringBuilder stringBuilder = new StringBuilder();
+    String getProcessedPage(String templatePage, List<?> objectsList) {
+        List<String> fieldNamesFromTemplateList = getFieldNamesFromTemplateList(templatePage);
+        List<String> parametersList = getParametersList(templatePage);
+        StringBuilder processedPageBuilder = new StringBuilder();
+        Matcher listCodeBlockMatcher = FIND_LIST_BLOCK_PATTERN.matcher(templatePage);
 
         for (Object object : objectsList) {
-            Map<String, String> userMap = getFieldNameValueMapFromObject(object, fieldNameList);
-            stringBuilder.append(getProcessedRow(fieldNameList, parametersList, userMap, page)).append("\n");
+            List<String> actualFieldNamesList = getActualFieldNames(object, fieldNamesFromTemplateList);
+            Map<String, String> userFieldsMap = getFieldNameValueMapFromObject(object, actualFieldNamesList);
+            processedPageBuilder.append(getProcessedRow(actualFieldNamesList, parametersList, userFieldsMap,
+                    templatePage)).append("\n");
         }
 
-        Matcher matcher = FIND_CODE_BLOCK_LIST.matcher(page);
-        if (matcher.find()) {
-            return page.replace(matcher.group(0), stringBuilder.substring(0, stringBuilder.length() - "\n".length()));
+        if (listCodeBlockMatcher.find()) {
+            return templatePage.replace(listCodeBlockMatcher.group(0), processedPageBuilder.substring(0, processedPageBuilder.length()
+                    - "\n".length()));
         }
         throw new RuntimeException("Error while processed page. No matches found");
     }
 
-    String getProcessedRow(List<String> fieldNameList, List<String> parametersList,
-                           Map<String, String> userFieldValueMap, String page) {
-        Matcher matcher = FIND_ROW_BLOCK.matcher(page);
+    String getProcessedRow(List<String> actualFieldNamesList, List<String> parametersList,
+                           Map<String, String> userFieldValueMap, String templatePage) {
+        Matcher rowCodeBlockMatcher = FIND_ROW_BLOCK_PATTERN.matcher(templatePage);
 
-        if (matcher.find()) {
-            String row = matcher.group(1);
+        if (rowCodeBlockMatcher.find()) {
+            String row = rowCodeBlockMatcher.group(1);
 
-            for (int i = 0; i < fieldNameList.size(); i++) {
-                row = row.replace(parametersList.get(i), userFieldValueMap.get(fieldNameList.get(i)));
+            for (int i = 0; i < actualFieldNamesList.size(); i++) {
+                row = row.replace(parametersList.get(i), userFieldValueMap.get(actualFieldNamesList.get(i)));
             }
 
             return row;
@@ -70,39 +74,58 @@ public class ListTemplateProcess implements TemplateProcessor {
         throw new RuntimeException("Error while processed row from template. No matches found");
     }
 
-    Map<String, String> getFieldNameValueMapFromObject(Object object, List<String> fieldNameList) {
+    Map<String, String> getFieldNameValueMapFromObject(Object object, List<String> actualFieldNamesList) {
 
-        Map<String, String> userMap = new HashMap<>();
+        Map<String, String> userFieldsMap = new HashMap<>();
 
-        for (String fieldName : fieldNameList) {
+        for (String fieldName : actualFieldNamesList) {
             try {
                 Field field = object.getClass().getDeclaredField(fieldName);
                 field.setAccessible(true);
-                userMap.put(fieldName, String.valueOf(field.get(object)));
+                userFieldsMap.put(fieldName, String.valueOf(field.get(object)));
             } catch (IllegalAccessException | NoSuchFieldException e) {
                 throw new RuntimeException("Error while getting field values from object", e);
             }
         }
-        return userMap;
+        return userFieldsMap;
     }
 
-    List<String> getParametersList(String page) {
-        Matcher matcher = FIND_PARAMETER.matcher(page);
+    List<String> getParametersList(String templatePage) {
+        Matcher parameterMatcher = FIND_PARAMETER_PATTERN.matcher(templatePage);
         List<String> parametersList = new ArrayList<>();
 
-        while (matcher.find()) {
-            parametersList.add(matcher.group(0));
+        while (parameterMatcher.find()) {
+            parametersList.add(parameterMatcher.group(0));
         }
         return parametersList;
     }
 
-    List<String> getFieldNamesList(String page) {
-        Matcher matcher = FIND_FIELD_PATTERN.matcher(page);
+    List<String> getFieldNamesFromTemplateList(String templatePage) {
+        Matcher fieldMatcher = FIND_FIELD_PATTERN.matcher(templatePage);
         List<String> fieldNameList = new ArrayList<>();
 
-        while (matcher.find()) {
-            fieldNameList.add(matcher.group(1));
+        while (fieldMatcher.find()) {
+            fieldNameList.add(fieldMatcher.group(1));
         }
         return fieldNameList;
+    }
+
+    List<String> getActualFieldNames(Object object, List<String> fieldNameList) {
+        Field[] objectFields = object.getClass().getDeclaredFields();
+        List<String> objectFieldNames = new ArrayList<>();
+        List<String> actualFieldNamesList = new ArrayList<>();
+
+        for (Field field : objectFields) {
+            objectFieldNames.add(field.getName());
+        }
+
+
+        for (String fieldName : fieldNameList) {
+            if (objectFieldNames.contains(fieldName)) {
+                actualFieldNamesList.add(fieldName);
+            }
+        }
+
+        return actualFieldNamesList;
     }
 }

@@ -1,10 +1,10 @@
         <tr class="row">
-            <td class="col-lg-1">1</td>
-            <td class="col-lg-2">Alex</td>
-            <td class="col-lg-2">Developer</td>
-            <td class="col-lg-1">3000.0</td>
-            <td class="col-lg-2">1993-06-22</td>
-            <td class="col-lg-2">
+            <td class="col-1">1</td>
+            <td class="col-2">Alex</td>
+            <td class="col-2">Developer</td>
+            <td class="col-1">3000.0</td>
+            <td class="col-2">1993-06-22</td>
+            <td class="col-2">
                 <div class="page__block">
                     <div>
                         <form action="/users/edit" method="GET">

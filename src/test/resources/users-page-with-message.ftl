@@ -12,16 +12,17 @@
     <title>Table users</title>
 </head>
 
-<body class="page_body container-fluid">
+<body>
+<div class="page_body container-fluid">
 <table class="table">
     <thead class="thead-dark">
     <tr class="row">
-        <th scope="col" class="col-lg-1">Id</th>
-        <th scope="col" class="col-lg-2">First name</th>
-        <th scope="col" class="col-lg-2">Second name</th>
-        <th scope="col" class="col-lg-1">Salary</th>
-        <th scope="col" class="col-lg-2">Date of birth</th>
-        <th scope="col" class="col-lg-2">
+        <th scope="col" class="col-1">Id</th>
+        <th scope="col" class="col-2">First name</th>
+        <th scope="col" class="col-2">Second name</th>
+        <th scope="col" class="col-1">Salary</th>
+        <th scope="col" class="col-2">Date of birth</th>
+        <th scope="col" class="col-2">
             <div class="page_add_user_form">
                 <form action="/users/add" method="GET">
                     <button>
@@ -30,7 +31,7 @@
                 </form>
             </div>
         </th>
-        <th class="col-lg-2">
+        <th class="col-2">
             <nav class="navbar navbar-light bg-light search">
                 <form action="/users/search" method="GET" class="form-inline">
                     <div class="input-group">
@@ -48,17 +49,17 @@
     <tbody>
     <#list users as user>
         <tr class="row">
-            <td class="col-lg-1">${user.id}</td>
-            <td class="col-lg-2">${user.firstName}</td>
-            <td class="col-lg-2">${user.secondName}</td>
-            <td class="col-lg-1">${user.salary}</td>
-            <td class="col-lg-2">${user.dateOfBirth}</td>
-            <td class="col-lg-2">
+            <td class="col-1">${id}</td>
+            <td class="col-2">${firstName}</td>
+            <td class="col-2">${secondName}</td>
+            <td class="col-1">${salary}</td>
+            <td class="col-2">${dateOfBirth}</td>
+            <td class="col-2">
                 <div class="page__block">
                     <div>
                         <form action="/users/edit" method="GET">
                             <button>
-                                <input type="hidden" name="id" value="${user.id}">
+                                <input type="hidden" name="id" value="${id}">
                                 <img src="/img/edit.jpg" alt="Edit" style="vertical-align:middle">
                             </button>
                         </form>
@@ -66,7 +67,7 @@
                     <div>
                         <form action="/users/remove" method="POST">
                             <button>
-                                <input type="hidden" name="id" value="${user.id}">
+                                <input type="hidden" name="id" value="${id}">
                                 <img src="/img/remove.jpg" alt="Remove" style="vertical-align:middle">
                             </button>
                         </form>
@@ -87,6 +88,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
         integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
         crossorigin="anonymous"></script>
+</div>
 </body>
 </html>
 
