@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 public class ListTemplateProcess implements TemplateProcessor {
 
     private final Pattern FIND_LIST_BLOCK_PATTERN = Pattern.compile("<#list .+>([\\s\\S]+)</#list>");
-    private final Pattern FIND_ROW_BLOCK_PATTERN = Pattern.compile("<#list .+>\n([\\s\\S]+)(?=\\n\\s{4}</#list)");
+    private final Pattern FIND_ROW_BLOCK_PATTERN = Pattern.compile("<#list .+>\r\n([\\s\\S]+)(?=\r\n\\s{4}</#list)");
     private final Pattern FIND_LIST_NAME_PATTERN = Pattern.compile("((?<=list )\\w+) ");
     private final Pattern FIND_FIELD_PATTERN = Pattern.compile("((?<=\\$\\{)\\w+)");
     private final Pattern FIND_PARAMETER_PATTERN = Pattern.compile("\\$\\{\\w.+}");
@@ -48,12 +48,12 @@ public class ListTemplateProcess implements TemplateProcessor {
             List<String> actualFieldNamesList = getActualFieldNames(object, fieldNamesFromTemplateList);
             Map<String, String> userFieldsMap = getFieldNameValueMapFromObject(object, actualFieldNamesList);
             processedPageBuilder.append(getProcessedRow(actualFieldNamesList, parametersList, userFieldsMap,
-                    templatePage)).append("\n");
+                    templatePage)).append("\r\n");
         }
 
         if (listCodeBlockMatcher.find()) {
             return templatePage.replace(listCodeBlockMatcher.group(0), processedPageBuilder.substring(0, processedPageBuilder.length()
-                    - "\n".length()));
+                    - "\r\n".length()));
         }
         throw new RuntimeException("Error while processed page. No matches found");
     }
