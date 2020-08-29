@@ -15,9 +15,9 @@ public class TemplateGenerator {
 
     private static final TemplateLoader DEFAULT_TEMPLATE_LOADER = new ClasspathTemplateLoader();
 
-    private final TemplateLoader templateLoader;
+    private final TemplateLoader TEMPLATE_LOADER;
 
-    private final List<TemplateProcessor> templateProcessorList = List.of(new SingleValueTemplateProcess(),
+    private final List<TemplateProcessor> TEMPLATE_PROCESSOR_LIST = List.of(new SingleValueTemplateProcess(),
             new ListTemplateProcess());
 
     public TemplateGenerator() {
@@ -25,14 +25,14 @@ public class TemplateGenerator {
     }
 
     public TemplateGenerator(TemplateLoader templateLoader) {
-        this.templateLoader = templateLoader;
+        this.TEMPLATE_LOADER = templateLoader;
     }
 
     public ProcessedTemplate process(String templatePath, Map<String, Object> parameters) {
 
         ProcessedTemplate processedTemplate = new ProcessedTemplate();
-        for (TemplateProcessor templateProcessor : templateProcessorList) {
-            Template template = templateLoader.load(templatePath);
+        for (TemplateProcessor templateProcessor : TEMPLATE_PROCESSOR_LIST) {
+            Template template = TEMPLATE_LOADER.load(templatePath);
             templateProcessor.process(template, processedTemplate, parameters);
         }
         return processedTemplate;

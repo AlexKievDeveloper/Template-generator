@@ -4,19 +4,19 @@ import java.io.InputStream;
 
 public class Template {
 
-    private InputStream content;
-    private String path;
+    private final InputStream CONTENT;
+    private final String PATH;
 
     public Template(InputStream content, String path) {
-        this.content = content;
-        this.path = path;
+        this.CONTENT = content;
+        this.PATH = path;
     }
 
-    public InputStream getContent() {
-        return content;
+    public InputStream getCONTENT() {
+        return CONTENT;
     }
 
-    public String getPath() {
-        return path;
+    public String getPATH() {
+        return PATH;
     }
 }

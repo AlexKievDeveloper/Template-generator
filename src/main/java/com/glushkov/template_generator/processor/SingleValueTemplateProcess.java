@@ -19,7 +19,7 @@ public class SingleValueTemplateProcess implements TemplateProcessor {
     @Override
     public ProcessedTemplate process(Template template, ProcessedTemplate processedTemplate,
                                      Map<String, Object> parameters) {
-        try (BufferedInputStream bufferedInputStream = new BufferedInputStream(template.getContent())) {
+        try (BufferedInputStream bufferedInputStream = new BufferedInputStream(template.getCONTENT())) {
             String templatePage = new String(bufferedInputStream.readAllBytes());
             List<String> fieldNamesFromTemplateList = getFieldNamesFromTemplateList(templatePage);
             List<String> parametersList = getParametersList(templatePage);

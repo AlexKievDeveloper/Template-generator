@@ -16,15 +16,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TemplateGeneratorITest {
     private final TemplateGenerator TEMPLATE_GENERATOR;
-    private final Map<String, Object> PARAMETERS;
+    private final Map<String, Object> PARAMETERS_MAP;
 
     TemplateGeneratorITest() {
         TEMPLATE_GENERATOR = new TemplateGenerator();
-        PARAMETERS = new HashMap<>();
+        PARAMETERS_MAP = new HashMap<>();
     }
 
     @Test
-    @DisplayName("Returns template after processing without any changed")
+    @DisplayName("Returns template after processing without any changes")
     void processEmptyMapUsersPageTest() throws IOException {
         //prepare
         String templatePath = "/users.ftl";
@@ -36,14 +36,14 @@ class TemplateGeneratorITest {
         }
 
         //when
-        String actualPage = TEMPLATE_GENERATOR.process(templatePath, PARAMETERS).getContent();
+        String actualPage = TEMPLATE_GENERATOR.process(templatePath, PARAMETERS_MAP).getContent();
 
         //then
         assertEquals(expectedPage, actualPage);
     }
 
     @Test
-    @DisplayName("Returns template after processing without any changed")
+    @DisplayName("Returns template after processing without any changes")
     void processEmptyMapAddUserPageTest() throws IOException {
         //prepare
         String templatePath = "/add-user-page.html";
@@ -55,7 +55,7 @@ class TemplateGeneratorITest {
         }
 
         //when
-        String actualPage = TEMPLATE_GENERATOR.process(templatePath, PARAMETERS).getContent();
+        String actualPage = TEMPLATE_GENERATOR.process(templatePath, PARAMETERS_MAP).getContent();
 
         //then
         assertEquals(expectedPage, actualPage);
@@ -66,7 +66,7 @@ class TemplateGeneratorITest {
     void processMapWithMessageTest() throws IOException {
         //prepare
         String templatePath = "/users.ftl";
-        PARAMETERS.put("message", "Sorry, no users were found for your request");
+        PARAMETERS_MAP.put("message", "Sorry, no users were found for your request");
         String expectedPage;
 
         try (BufferedInputStream bufferedInputStream = new BufferedInputStream(getClass().
@@ -75,7 +75,7 @@ class TemplateGeneratorITest {
         }
 
         //when
-        String actualPage = TEMPLATE_GENERATOR.process(templatePath, PARAMETERS).getContent();
+        String actualPage = TEMPLATE_GENERATOR.process(templatePath, PARAMETERS_MAP).getContent();
 
         //then
         assertEquals(expectedPage, actualPage);
@@ -86,8 +86,8 @@ class TemplateGeneratorITest {
     void processMapWithMessageAndCodeTest() throws IOException {
         //prepare
         String templatePath = "/error.ftl";
-        PARAMETERS.put("message", "Sorry, no users were found for your request");
-        PARAMETERS.put("code", 505);
+        PARAMETERS_MAP.put("message", "Sorry, no users were found for your request");
+        PARAMETERS_MAP.put("code", 505);
         String expectedPage;
         try (BufferedInputStream bufferedInputStream = new BufferedInputStream(getClass().
                 getResourceAsStream("/error-page-with-message-and-code.html"))) {
@@ -95,7 +95,7 @@ class TemplateGeneratorITest {
         }
 
         //when
-        String actualPage = TEMPLATE_GENERATOR.process(templatePath, PARAMETERS).getContent();
+        String actualPage = TEMPLATE_GENERATOR.process(templatePath, PARAMETERS_MAP).getContent();
 
         //then
         assertEquals(expectedPage, actualPage);
@@ -126,7 +126,7 @@ class TemplateGeneratorITest {
         usersList.add(firstUser);
         usersList.add(secondUser);
 
-        PARAMETERS.put("users", usersList);
+        PARAMETERS_MAP.put("users", usersList);
 
         String expectedPage;
         try (BufferedInputStream bufferedInputStream = new BufferedInputStream(getClass().
@@ -135,7 +135,7 @@ class TemplateGeneratorITest {
         }
 
         //when
-        String actualPage = TEMPLATE_GENERATOR.process(templatePath, PARAMETERS).getContent();
+        String actualPage = TEMPLATE_GENERATOR.process(templatePath, PARAMETERS_MAP).getContent();
 
         //then
         assertEquals(expectedPage, actualPage);

@@ -6,7 +6,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,7 +23,7 @@ class SingleValueTemplateProcessITest {
     private final ProcessedTemplate PROCESSED_TEMPLATE;
     private final Map<String, Object> PARAMETERS;
 
-    SingleValueTemplateProcessITest(){
+    SingleValueTemplateProcessITest() {
         SINGLE_VALUE_TEMPLATE_PROCESS = new SingleValueTemplateProcess();
         TEMPLATE = mock(Template.class);
         PROCESSED_TEMPLATE = new ProcessedTemplate();
@@ -37,7 +36,7 @@ class SingleValueTemplateProcessITest {
         //prepare
         String expectedProcessedTemplate;
 
-        when(TEMPLATE.getContent()).thenReturn(new BufferedInputStream(
+        when(TEMPLATE.getCONTENT()).thenReturn(new BufferedInputStream(
                 getClass().getResourceAsStream("/add-user-page.html")));
 
         try (BufferedInputStream bufferedInputStream = new BufferedInputStream(getClass().
@@ -60,7 +59,7 @@ class SingleValueTemplateProcessITest {
 
         PARAMETERS.put("message", "Sorry, no users were found for your request");
 
-        when(TEMPLATE.getContent()).thenReturn(new BufferedInputStream(
+        when(TEMPLATE.getCONTENT()).thenReturn(new BufferedInputStream(
                 getClass().getResourceAsStream("/users.ftl")));
 
         try (BufferedInputStream bufferedInputStream = new BufferedInputStream(getClass().
@@ -85,7 +84,7 @@ class SingleValueTemplateProcessITest {
         PARAMETERS.put("message", "Sorry, no users were found for your request");
         PARAMETERS.put("code", "505");
 
-        when(TEMPLATE.getContent()).thenReturn(new BufferedInputStream(
+        when(TEMPLATE.getCONTENT()).thenReturn(new BufferedInputStream(
                 getClass().getResourceAsStream("/error.ftl")));
 
         try (BufferedInputStream bufferedInputStream = new BufferedInputStream(getClass().
@@ -111,9 +110,9 @@ class SingleValueTemplateProcessITest {
         PARAMETERS.put("firstName", "Alex");
         PARAMETERS.put("secondName", "Developer");
         PARAMETERS.put("salary", 3000.0);
-        PARAMETERS.put("dateOfBirth", LocalDate.of(1993,6,22));
+        PARAMETERS.put("dateOfBirth", LocalDate.of(1993, 6, 22));
 
-        when(TEMPLATE.getContent()).thenReturn(new BufferedInputStream(
+        when(TEMPLATE.getCONTENT()).thenReturn(new BufferedInputStream(
                 getClass().getResourceAsStream("/edit.ftl")));
 
         try (BufferedInputStream bufferedInputStream = new BufferedInputStream(getClass().
@@ -153,7 +152,7 @@ class SingleValueTemplateProcessITest {
 
         //then
         for (int i = 0; i < expectedParametersList.size(); i++) {
-            assertEquals(expectedParametersList.get(i),actualParametersList.get(i));
+            assertEquals(expectedParametersList.get(i), actualParametersList.get(i));
         }
     }
 

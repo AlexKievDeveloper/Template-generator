@@ -63,7 +63,7 @@ class ListTemplateProcessITest {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("users", USERS_LIST);
 
-        when(template.getContent()).thenReturn(new BufferedInputStream(getClass().
+        when(template.getCONTENT()).thenReturn(new BufferedInputStream(getClass().
                 getResourceAsStream("/users.ftl")));
 
         try (BufferedInputStream bufferedInputStream = new BufferedInputStream(getClass().

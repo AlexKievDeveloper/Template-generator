@@ -21,7 +21,7 @@ public class ListTemplateProcess implements TemplateProcessor {
     @Override
     public ProcessedTemplate process(Template template, ProcessedTemplate processedTemplate,
                                      Map<String, Object> parameters) {
-        try (BufferedInputStream bufferedInputStream = new BufferedInputStream(template.getContent())) {
+        try (BufferedInputStream bufferedInputStream = new BufferedInputStream(template.getCONTENT())) {
             String templatePage = new String(bufferedInputStream.readAllBytes());
             Matcher listNameMatcher = FIND_LIST_NAME_PATTERN.matcher(templatePage);
 
@@ -119,13 +119,11 @@ public class ListTemplateProcess implements TemplateProcessor {
             objectFieldNames.add(field.getName());
         }
 
-
         for (String fieldName : fieldNameList) {
             if (objectFieldNames.contains(fieldName)) {
                 actualFieldNamesList.add(fieldName);
             }
         }
-
         return actualFieldNamesList;
     }
 }
