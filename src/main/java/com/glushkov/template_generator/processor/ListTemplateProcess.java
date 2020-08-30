@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 public class ListTemplateProcess implements TemplateProcessor {
     private final String SYSTEM_SEPARATOR = System.lineSeparator();
     private final Pattern FIND_LIST_BLOCK_PATTERN = Pattern.compile("<#list .+>([\\s\\S]+)</#list>");
-    private final Pattern FIND_ROW_BLOCK_PATTERN = Pattern.compile("<#list .+>" + SYSTEM_SEPARATOR+ "([\\s\\S]+)(?="
+    private final Pattern FIND_ROW_BLOCK_PATTERN = Pattern.compile("<#list .+>" + SYSTEM_SEPARATOR + "([\\s\\S]+)(?="
             + SYSTEM_SEPARATOR + "\\s{4}</#list)");
     private final Pattern FIND_LIST_NAME_PATTERN = Pattern.compile("((?<=list )\\w+) ");
     private final Pattern FIND_FIELD_PATTERN = Pattern.compile("((?<=\\$\\{)\\w+)");

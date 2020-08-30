@@ -30,7 +30,7 @@ class ListTemplateProcessITest {
 
         LIST_TEMPLATE_PROCESS = new ListTemplateProcess();
         try (BufferedInputStream bufferedInputStream = new BufferedInputStream(getClass().
-                getResourceAsStream("/users.ftl"))) {
+                getResourceAsStream("/templates/users.ftl"))) {
             TEMPLATE_PAGE = new String(bufferedInputStream.readAllBytes());
         }
 
@@ -64,10 +64,10 @@ class ListTemplateProcessITest {
         parameters.put("users", USERS_LIST);
 
         when(template.getCONTENT()).thenReturn(new BufferedInputStream(getClass().
-                getResourceAsStream("/users.ftl")));
+                getResourceAsStream("/templates/users.ftl")));
 
         try (BufferedInputStream bufferedInputStream = new BufferedInputStream(getClass().
-                getResourceAsStream("/users-page-with-users.ftl"))) {
+                getResourceAsStream("/expected-pages/users-page-with-users.ftl"))) {
             expectedProcessedTemplate = new String(bufferedInputStream.readAllBytes());
         }
 
@@ -85,7 +85,7 @@ class ListTemplateProcessITest {
         String expectedProcessedPage;
 
         try (BufferedInputStream bufferedInputStream = new BufferedInputStream(getClass().
-                getResourceAsStream("/processed-page.ftl"))) {
+                getResourceAsStream("/expected-pages/processed-page.ftl"))) {
             expectedProcessedPage = new String(bufferedInputStream.readAllBytes());
         }
 
@@ -108,7 +108,7 @@ class ListTemplateProcessITest {
         String expectedRow;
 
         try (BufferedInputStream bufferedInputStream = new BufferedInputStream(getClass().
-                getResourceAsStream("/expected-row"))) {
+                getResourceAsStream("/expected-pages/expected-row"))) {
             expectedRow = new String(bufferedInputStream.readAllBytes());
         }
         //when

@@ -21,14 +21,14 @@ class ClasspathTemplateLoaderITest {
         String expectedPath;
 
         try (BufferedInputStream bufferedInputStream = new BufferedInputStream(getClass().
-                getResourceAsStream("/users.ftl"))) {
-            expectedTemplate = new Template(bufferedInputStream, "/users.ftl");
+                getResourceAsStream("/templates/users.ftl"))) {
+            expectedTemplate = new Template(bufferedInputStream, "/templates/users.ftl");
             expectedBytesArray = expectedTemplate.getCONTENT().readAllBytes();
             expectedPath = expectedTemplate.getPATH();
         }
 
         //when
-        Template actualTemplate = classpathTemplateLoader.load("/users.ftl");
+        Template actualTemplate = classpathTemplateLoader.load("/templates/users.ftl");
         try (BufferedInputStream bufferedInputStream = new BufferedInputStream(actualTemplate.getCONTENT())) {
             byte[] actualByteArray = bufferedInputStream.readAllBytes();
 

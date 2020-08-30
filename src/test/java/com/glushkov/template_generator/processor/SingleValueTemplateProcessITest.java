@@ -37,10 +37,10 @@ class SingleValueTemplateProcessITest {
         String expectedProcessedTemplate;
 
         when(TEMPLATE.getCONTENT()).thenReturn(new BufferedInputStream(
-                getClass().getResourceAsStream("/add-user-page.html")));
+                getClass().getResourceAsStream("/expected-pages/add-user-page.html")));
 
         try (BufferedInputStream bufferedInputStream = new BufferedInputStream(getClass().
-                getResourceAsStream("/add-user-page.html"))) {
+                getResourceAsStream("/expected-pages/add-user-page.html"))) {
             expectedProcessedTemplate = new String(bufferedInputStream.readAllBytes());
         }
 
@@ -60,10 +60,10 @@ class SingleValueTemplateProcessITest {
         PARAMETERS.put("message", "Sorry, no users were found for your request");
 
         when(TEMPLATE.getCONTENT()).thenReturn(new BufferedInputStream(
-                getClass().getResourceAsStream("/users.ftl")));
+                getClass().getResourceAsStream("/templates/users.ftl")));
 
         try (BufferedInputStream bufferedInputStream = new BufferedInputStream(getClass().
-                getResourceAsStream("/users-page-with-message.ftl"))) {
+                getResourceAsStream("/expected-pages/users-page-with-message.ftl"))) {
             expectedProcessedTemplate = new String(bufferedInputStream.readAllBytes());
         }
 
@@ -85,10 +85,10 @@ class SingleValueTemplateProcessITest {
         PARAMETERS.put("code", "505");
 
         when(TEMPLATE.getCONTENT()).thenReturn(new BufferedInputStream(
-                getClass().getResourceAsStream("/error.ftl")));
+                getClass().getResourceAsStream("/templates/error.ftl")));
 
         try (BufferedInputStream bufferedInputStream = new BufferedInputStream(getClass().
-                getResourceAsStream("/error-page-with-message-and-code.html"))) {
+                getResourceAsStream("/expected-pages/error-page-with-message-and-code.html"))) {
             expectedProcessedTemplate = new String(bufferedInputStream.readAllBytes());
         }
 
@@ -113,10 +113,10 @@ class SingleValueTemplateProcessITest {
         PARAMETERS.put("dateOfBirth", LocalDate.of(1993, 6, 22));
 
         when(TEMPLATE.getCONTENT()).thenReturn(new BufferedInputStream(
-                getClass().getResourceAsStream("/edit.ftl")));
+                getClass().getResourceAsStream("/templates/edit.ftl")));
 
         try (BufferedInputStream bufferedInputStream = new BufferedInputStream(getClass().
-                getResourceAsStream("/edit-page.html"))) {
+                getResourceAsStream("/templates/edit-page.html"))) {
             expectedProcessedTemplate = new String(bufferedInputStream.readAllBytes());
         }
         //when
@@ -143,7 +143,7 @@ class SingleValueTemplateProcessITest {
         expectedParametersList.add("${message}");
 
         try (BufferedInputStream bufferedInputStream = new BufferedInputStream(getClass().
-                getResourceAsStream("/users.ftl"))) {
+                getResourceAsStream("/templates/users.ftl"))) {
             templatePage = new String(bufferedInputStream.readAllBytes());
         }
 
@@ -173,7 +173,7 @@ class SingleValueTemplateProcessITest {
         expectedList.add("message");
 
         try (BufferedInputStream bufferedInputStream = new BufferedInputStream(getClass().
-                getResourceAsStream("/users.ftl"))) {
+                getResourceAsStream("/templates/users.ftl"))) {
             templatePage = new String(bufferedInputStream.readAllBytes());
         }
 

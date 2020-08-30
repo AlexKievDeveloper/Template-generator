@@ -27,11 +27,11 @@ class TemplateGeneratorITest {
     @DisplayName("Returns template after processing without any changes")
     void processEmptyMapUsersPageTest() throws IOException {
         //prepare
-        String templatePath = "/users.ftl";
+        String templatePath = "/templates/users.ftl";
         String expectedPage;
 
         try (BufferedInputStream bufferedInputStream = new BufferedInputStream(getClass().
-                getResourceAsStream("/users.ftl"))) {
+                getResourceAsStream("/templates/users.ftl"))) {
             expectedPage = new String(bufferedInputStream.readAllBytes());
         }
 
@@ -46,11 +46,11 @@ class TemplateGeneratorITest {
     @DisplayName("Returns template after processing without any changes")
     void processEmptyMapAddUserPageTest() throws IOException {
         //prepare
-        String templatePath = "/add-user-page.html";
+        String templatePath = "/expected-pages/add-user-page.html";
         String expectedPage;
 
         try (BufferedInputStream bufferedInputStream = new BufferedInputStream(getClass().
-                getResourceAsStream("/add-user-page.html"))) {
+                getResourceAsStream("/expected-pages/add-user-page.html"))) {
             expectedPage = new String(bufferedInputStream.readAllBytes());
         }
 
@@ -65,12 +65,12 @@ class TemplateGeneratorITest {
     @DisplayName("Returns processed template with message")
     void processMapWithMessageTest() throws IOException {
         //prepare
-        String templatePath = "/users.ftl";
+        String templatePath = "/templates/users.ftl";
         PARAMETERS_MAP.put("message", "Sorry, no users were found for your request");
         String expectedPage;
 
         try (BufferedInputStream bufferedInputStream = new BufferedInputStream(getClass().
-                getResourceAsStream("/users-page-with-message.ftl"))) {
+                getResourceAsStream("/expected-pages/users-page-with-message.ftl"))) {
             expectedPage = new String(bufferedInputStream.readAllBytes());
         }
 
@@ -85,12 +85,12 @@ class TemplateGeneratorITest {
     @DisplayName("Returns processed template with message and code")
     void processMapWithMessageAndCodeTest() throws IOException {
         //prepare
-        String templatePath = "/error.ftl";
+        String templatePath = "/templates/error.ftl";
         PARAMETERS_MAP.put("message", "Sorry, no users were found for your request");
         PARAMETERS_MAP.put("code", 505);
         String expectedPage;
         try (BufferedInputStream bufferedInputStream = new BufferedInputStream(getClass().
-                getResourceAsStream("/error-page-with-message-and-code.html"))) {
+                getResourceAsStream("/expected-pages/error-page-with-message-and-code.html"))) {
             expectedPage = new String(bufferedInputStream.readAllBytes());
         }
 
@@ -105,7 +105,7 @@ class TemplateGeneratorITest {
     @DisplayName("Returns processed template with users")
     void processMapWithUsersListTest() throws IOException {
         //prepare
-        String templatePath = "/users.ftl";
+        String templatePath = "/templates/users.ftl";
 
         List<User> usersList = new ArrayList<>();
         User firstUser = new User();
@@ -130,7 +130,7 @@ class TemplateGeneratorITest {
 
         String expectedPage;
         try (BufferedInputStream bufferedInputStream = new BufferedInputStream(getClass().
-                getResourceAsStream("/users-page-with-users.ftl"))) {
+                getResourceAsStream("/expected-pages/users-page-with-users.ftl"))) {
             expectedPage = new String(bufferedInputStream.readAllBytes());
         }
 
